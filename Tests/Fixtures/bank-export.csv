@@ -1,0 +1,6 @@
+"Account","FR76 3000 6000 0112 3456 7890 189",,,,,
+"Exported","2026-09-21",,,,,
+"Booking date","Value date","Description","Counterparty","Reference","Amount","Currency"
+"2026-09-18","2026-09-18","SEPA credit transfer","SARL Le Comptoir","LC-7781","1,300.00","EUR"
+"2026-09-19","2026-09-19","Card payment, Lyon","Monoprix","","-58.20","EUR"
+"2026-09-20","2026-09-21","Bank fees","","","-9.00","EUR"

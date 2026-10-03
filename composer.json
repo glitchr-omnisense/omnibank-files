@@ -1,0 +1,19 @@
+{
+    "name": "omnibank/files",
+    "type": "library",
+    "description": "Omnibank Files: bank statements read from the files banks export - CAMT.053, OFX (SGML and XML), CSV with a column map - and SEPA credit transfers written as pain.001.001.03. No network.",
+    "keywords": ["bank", "camt.053", "ofx", "csv", "pain.001", "sepa", "omnibank"],
+    "license": "LGPL-3.0-or-later",
+    "authors": [{"name": "Marco Meyer", "email": "marco.meyer@glitchr.io"}],
+    "require": {
+        "php": ">=8.2",
+        "ext-dom": "*",
+        "ext-libxml": "*",
+        "glitchr/omnibank": "^1.0@dev"
+    },
+    "require-dev": {"phpunit/phpunit": "^11.0"},
+    "suggest": {"ext-intl": "Names and labels transliterated to the SEPA character set (iconv otherwise)", "ext-iconv": "CSV exports in Windows-1252 read as UTF-8"},
+    "autoload": {"psr-4": {"Omnibank\\Files\\": ""}, "exclude-from-classmap": ["/Tests/"]},
+    "autoload-dev": {"psr-4": {"Omnibank\\Files\\Tests\\": "Tests/"}},
+    "config": {"sort-packages": true}
+}

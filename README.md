@@ -4,6 +4,13 @@ Statement files for [glitchr/omnibank](https://github.com/glitchr-studio/omniban
 export, read as accounts, balances and transactions - CAMT.053, OFX, CSV - and SEPA credit
 transfers written as the pain.001.001.03 file a bank takes. No network, no consent.
 
+```php
+$gateway = (new FilesGatewayFactory())->create(['debtor_name' => 'Nakaya SAS']);
+```
+
+No framework needed, and no HTTP client: the package requires `glitchr/omnibank` and the `dom`
+and `libxml` extensions. In a Symfony application, the same through the bundle's configuration:
+
 ```yaml
 omnibank:
     gateways:

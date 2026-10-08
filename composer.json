@@ -3,7 +3,7 @@
     "type": "library",
     "description": "Omnibank Files: bank statements read from the files banks export - CAMT.053, OFX (SGML and XML), CSV with a column map - and SEPA credit transfers written as pain.001.001.03. No network.",
     "keywords": ["bank", "camt.053", "ofx", "csv", "pain.001", "sepa", "omnibank"],
-    "license": "LGPL-3.0-or-later",
+    "license": "MIT",
     "authors": [{"name": "Marco Meyer", "email": "marco.meyer@glitchr.io"}],
     "require": {
         "php": ">=8.2",

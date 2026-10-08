@@ -65,4 +65,4 @@ when the transfer gives none, so the bank's statement brings it back. `Pain001Wr
 several transfers in one file when you need it. The tests validate the file against the official
 ISO 20022 schema (`Tests/Fixtures/pain.001.001.03.xsd`).
 
-License: LGPL-3.0-or-later.
+License: MIT since 2026-10-09; earlier versions remain published under LGPL-3.0-or-later.

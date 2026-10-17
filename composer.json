@@ -9,7 +9,7 @@
         "php": ">=8.2",
         "ext-dom": "*",
         "ext-libxml": "*",
-        "glitchr/omnibank": "^1.0@dev"
+        "omniscient/omnibank": "^1.0@dev"
     },
     "require-dev": {"phpunit/phpunit": "^11.0"},
     "suggest": {"ext-intl": "Names and labels transliterated to the SEPA character set (iconv otherwise)", "ext-iconv": "CSV exports in Windows-1252 read as UTF-8"},

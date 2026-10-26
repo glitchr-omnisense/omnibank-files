@@ -1,6 +1,6 @@
 # omnibank/files
 
-Statement files for [omniscient/omnibank](https://github.com/glitchr-studio/omnibank): what banks
+Statement files for [omnisense/omnibank](https://github.com/glitchr-omnisense/omnibank): what banks
 export, read as accounts, balances and transactions - CAMT.053, OFX, CSV - and SEPA credit
 transfers written as the pain.001.001.03 file a bank takes. No network, no consent.
 
@@ -8,7 +8,7 @@ transfers written as the pain.001.001.03 file a bank takes. No network, no conse
 $gateway = (new FilesGatewayFactory())->create(['debtor_name' => 'Nakaya SAS']);
 ```
 
-No framework needed, and no HTTP client: the package requires `omniscient/omnibank` and the `dom`
+No framework needed, and no HTTP client: the package requires `omnisense/omnibank` and the `dom`
 and `libxml` extensions. In a Symfony application, the same through the bundle's configuration:
 
 ```yaml

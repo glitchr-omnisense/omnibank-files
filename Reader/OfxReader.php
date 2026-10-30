@@ -6,7 +6,9 @@ use Omnibank\Exception\ProviderException;
 use Omnibank\Files\Fingerprints;
 use Omnibank\Files\Statement;
 use Omnibank\Files\Text;
+use Omnibank\Files\Words;
 use Omnibank\Model\Account;
+use Omnibank\Model\AccountKind;
 use Omnibank\Model\Balance;
 use Omnibank\Model\BankTransaction;
 use Omnibank\Model\Money;
@@ -69,6 +71,7 @@ final class OfxReader implements ReaderInterface
             currency: $currency,
             type: $card ? 'card' : (null !== ($type = self::leaf($from, 'ACCTTYPE')) ? strtolower($type) : null),
             raw: array_filter(['bank' => self::leaf($from, 'BANKID'), 'branch' => self::leaf($from, 'BRANCHID'), 'number' => $number, 'key' => self::leaf($from, 'ACCTKEY'), 'file' => $name], static fn ($v) => null !== $v),
+            kind: $card ? AccountKind::CARD : Words::kind(self::leaf($from, 'ACCTTYPE')),
         );
 
         $balances = [];
@@ -106,6 +109,7 @@ final class OfxReader implements ReaderInterface
                 counterpartyIban: Text::isIban($toAccount) ? Text::iban($toAccount) : null,
                 reference: self::leaf($line, 'REFNUM') ?? self::leaf($line, 'CHECKNUM'),
                 raw: array_filter(array_map(static fn ($v) => \is_array($v) ? null : $v, array_map(static fn (array $values) => $values[0] ?? null, $line)), static fn ($v) => null !== $v),
+                category: Words::ofxCategory(self::leaf($line, 'TRNTYPE')),
             );
         }
 

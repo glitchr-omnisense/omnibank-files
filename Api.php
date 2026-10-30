@@ -127,6 +127,8 @@ final class Api
             currency: strtoupper((string) ($override['currency'] ?? $a->currency)),
             type: $override['type'] ?? $a->type,
             raw: $a->raw,
+            kind: isset($override['type']) ? Words::kind((string) $override['type']) : $a->kind,
+            state: $a->state,
         );
 
         return new Statement($account, $statement->balances, $statement->transactions);

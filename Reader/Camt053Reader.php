@@ -6,6 +6,7 @@ use Omnibank\Exception\ProviderException;
 use Omnibank\Files\Fingerprints;
 use Omnibank\Files\Statement;
 use Omnibank\Files\Text;
+use Omnibank\Files\Words;
 use Omnibank\Model\Account;
 use Omnibank\Model\Balance;
 use Omnibank\Model\BankTransaction;
@@ -92,6 +93,7 @@ final class Camt053Reader implements ReaderInterface
             currency: strtoupper($currency),
             type: $this->text('c:Acct/c:Tp/c:Cd | c:Acct/c:Tp/c:Prtry', $stmt),
             raw: array_filter(['statement' => $this->text('c:Id', $stmt), 'created' => $this->text('c:CreDtTm', $stmt), 'owner' => $this->text('c:Acct/c:Ownr/c:Nm', $stmt), 'file' => $name], static fn ($v) => null !== $v),
+            kind: Words::kind($this->text('c:Acct/c:Tp/c:Cd | c:Acct/c:Tp/c:Prtry', $stmt)),
         );
 
         $balances = [];
@@ -132,6 +134,9 @@ final class Camt053Reader implements ReaderInterface
         $reversal = 'true' === strtolower((string) $this->text('c:RvslInd', $entry));
         $entryInfo = $this->text('c:AddtlNtryInf', $entry);
 
+        // The ISO bank transaction code, "domain/family/sub-family": what the line is (a transfer, a withdrawal, a fee).
+        $code = $this->text('c:BkTxCd/c:Domn/c:Cd', $entry) ? implode('/', array_filter([$this->text('c:BkTxCd/c:Domn/c:Cd', $entry), $this->text('c:BkTxCd/c:Domn/c:Fmly/c:Cd', $entry), $this->text('c:BkTxCd/c:Domn/c:Fmly/c:SubFmlyCd', $entry)])) : null;
+
         $details = $this->nodes('c:NtryDtls/c:TxDtls', $entry);
         $split = \count($details) > 1 && \count($details) === \count(array_filter($details, fn (\DOMElement $d) => null !== $this->detailAmount($d, $currency)));
 
@@ -170,12 +175,13 @@ final class Camt053Reader implements ReaderInterface
                     'endToEndId' => $endToEnd,
                     'transactionId' => $detail ? $this->text('c:Refs/c:TxId', $detail) : null,
                     'mandateId' => $detail ? $this->text('c:Refs/c:MndtId', $detail) : null,
-                    'bankTransactionCode' => $this->text('c:BkTxCd/c:Domn/c:Cd', $entry) ? implode('/', array_filter([$this->text('c:BkTxCd/c:Domn/c:Cd', $entry), $this->text('c:BkTxCd/c:Domn/c:Fmly/c:Cd', $entry), $this->text('c:BkTxCd/c:Domn/c:Fmly/c:SubFmlyCd', $entry)])) : $this->text('c:BkTxCd/c:Prtry/c:Cd', $entry),
+                    'bankTransactionCode' => $code ?? $this->text('c:BkTxCd/c:Prtry/c:Cd', $entry),
                     'additionalEntryInfo' => $entryInfo,
                     'additionalTransactionInfo' => $txInfo,
                     'remittance' => '' !== $ustrd ? $ustrd : null,
                     'reversal' => $reversal ?: null,
                 ], static fn ($v) => null !== $v),
+                category: Words::camtCategory($code),
             );
         }
 

@@ -12,6 +12,9 @@ use Omnibank\Model\Connection;
 use Omnibank\Model\ConsentStatus;
 use Omnibank\Request\Notify;
 use Omnibank\Request\Transfer;
+use Omnibank\Files\Words;
+use Omnibank\Model\AccountKind;
+use Omnibank\Model\TransactionCategory;
 use PHPUnit\Framework\TestCase;
 
 final class FilesGatewayTest extends TestCase
@@ -191,6 +194,44 @@ final class FilesGatewayTest extends TestCase
         self::assertSame('Nakaya SAS Virement & epargne', $transfer->label, 'entities decoded');
         self::assertSame('EPARGNE-09', $transfer->reference);
         self::assertSame('INTERETS', self::byId($transactions)['BNP-0920-01']->label);
+
+        self::assertSame(AccountKind::SAVINGS, $account->kind, 'ACCTTYPE SAVINGS');
+        self::assertSame(TransactionCategory::TRANSFER, $transfer->category, 'TRNTYPE XFER');
+        self::assertSame(TransactionCategory::INCOME, self::byId($transactions)['BNP-0920-01']->category, 'TRNTYPE INT');
+    }
+
+    public function testCamt053BankTransactionCodesAndAccountTypes(): void
+    {
+        $gateway = self::gateway();
+        $connection = self::connection('camt053-2026-09-a.xml');
+        $account = $gateway->accounts($connection)[0];
+        self::assertSame(AccountKind::UNKNOWN, $account->kind, 'no Acct/Tp: the statement does not say');
+
+        $by = self::byId($gateway->transactions($connection, $account));
+        self::assertSame(TransactionCategory::TRANSFER, $by['2026090200012']->category, 'PMNT/RCDT/ESCT, a transfer received');
+        self::assertNull($by['2026090500007']->category, 'PMNT/IDDT, a direct debit, says nothing of what it pays');
+
+        self::assertSame(TransactionCategory::BANK_FEES, Words::camtCategory('ACMT/MDOP/CHRG'));
+        self::assertSame(TransactionCategory::BANK_FEES, Words::camtCategory('PMNT/RCDT/CHRG'), 'charges whatever the family');
+        self::assertSame(TransactionCategory::CASH, Words::camtCategory('PMNT/CCRD/CWDL'));
+        self::assertNull(Words::camtCategory('PMNT/CCRD/POSD'));
+        self::assertSame(TransactionCategory::LOAN, Words::camtCategory('LDAS/CSLN/PPAY'));
+        self::assertSame(AccountKind::CHECKING, Words::kind('CACC'));
+        self::assertSame(AccountKind::SAVINGS, Words::kind('SVGS'));
+        self::assertSame(AccountKind::LOAN, Words::kind('loan'));
+        self::assertSame(AccountKind::UNKNOWN, Words::kind('XYZW'));
+    }
+
+    public function testACsvCategoryColumnAndAccountType(): void
+    {
+        $csv = "Date;Libellé;Montant;Catégorie\n01/10/2026;LOYER;-850,00;housing\n02/10/2026;CB ???;-12,00;astrologie\n03/10/2026;VIR;100,00;\n";
+        $connection = new Connection(['statements' => [['name' => 'export.csv', 'content' => $csv, 'account' => ['id' => 'x', 'type' => 'SVGS']]]]);
+        $gateway = self::gateway();
+        $account = $gateway->accounts($connection)[0];
+        self::assertSame(AccountKind::SAVINGS, $account->kind);
+
+        $categories = array_map(static fn ($t) => $t->category, $gateway->transactions($connection, $account));
+        self::assertSame([TransactionCategory::HOUSING, TransactionCategory::UNKNOWN, null], $categories);
     }
 
     public function testACreditMutuelCsvExport(): void

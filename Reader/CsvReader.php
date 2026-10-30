@@ -7,6 +7,7 @@ use Omnibank\Exception\ProviderException;
 use Omnibank\Files\Fingerprints;
 use Omnibank\Files\Statement;
 use Omnibank\Files\Text;
+use Omnibank\Files\Words;
 use Omnibank\Model\Account;
 use Omnibank\Model\Balance;
 use Omnibank\Model\BankTransaction;
@@ -35,6 +36,7 @@ use Omnibank\Model\Money;
  *     currency: ...
  *     balance: ...           # the balance after the line: the latest one is the account's
  *     id: ...                # the bank's id for the line, when the export has one
+ *     category: ...          # Omnibank's category words (income, housing, transfer...): any other is "unknown"
  *
  * Each column has defaults that read the usual French and English exports
  * (Crédit Mutuel, CIC, BNP, Société Générale, LCL, La Banque Postale,
@@ -43,7 +45,8 @@ use Omnibank\Model\Money;
  * a date that reads in none of the formats is an error, never skipped.
  *
  * The account is the statement's "account" option (id, iban, bic, name,
- * currency, type), else the file's name.
+ * currency, type - ISO 20022 or OFX words, or Omnibank's kinds), else the
+ * file's name.
  */
 final class CsvReader implements ReaderInterface
 {
@@ -61,6 +64,7 @@ final class CsvReader implements ReaderInterface
         'currency' => ['devise', 'currency', 'monnaie'],
         'balance' => ['solde', 'balance', 'solde eur'],
         'id' => ['id', 'transaction id', 'numero operation', 'n operation'],
+        'category' => ['categorie', 'category'],
     ];
 
     public const DATE_FORMATS = ['d/m/Y', 'Y-m-d', 'd/m/y', 'd.m.Y', 'd-m-Y', 'Y/m/d', 'Y-m-d H:i:s', 'd/m/Y H:i:s', 'd/m/Y H:i'];
@@ -99,7 +103,7 @@ final class CsvReader implements ReaderInterface
         $currency = strtoupper((string) ($accountOptions['currency'] ?? $options['currency'] ?? 'EUR'));
         $iban = Text::iban($accountOptions['iban'] ?? null);
         $id = (string) ($accountOptions['id'] ?? $iban ?? pathinfo($name, \PATHINFO_FILENAME));
-        $account = new Account($id, $iban, $accountOptions['bic'] ?? null, (string) ($accountOptions['name'] ?? $id), $currency, $accountOptions['type'] ?? null, ['file' => $name]);
+        $account = new Account($id, $iban, $accountOptions['bic'] ?? null, (string) ($accountOptions['name'] ?? $id), $currency, $accountOptions['type'] ?? null, ['file' => $name], Words::kind($accountOptions['type'] ?? null));
 
         $fingerprints = new Fingerprints();
         $transactions = [];
@@ -131,6 +135,7 @@ final class CsvReader implements ReaderInterface
                 counterpartyIban: Text::iban($cell('counterparty_iban')),
                 reference: $cell('reference'),
                 raw: ['line' => $number, 'row' => $row],
+                category: Words::csvCategory($cell('category')),
             );
             if (null !== ($balance = $cell('balance')) && null !== ($balance = Text::decimal($balance, $decimal))) {
                 $balances[] = new Balance(Money::fromDecimal($balance, $cell('currency') ?? $currency), $bookedOn, 'booked');

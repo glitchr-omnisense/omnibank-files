@@ -149,6 +149,23 @@ Read through a column map. The `csv` options (the gateway's, a statement's own o
   `balance` column after the latest line (the first of the latest day when the export runs newest
   first).
 
+### Kinds and categories
+
+`Words` reads the statements' own words as omnisense/omnibank's:
+
+- the account's type as its kind: CAMT.053's `Acct/Tp/Cd` (ISO 20022 ExternalCashAccountType1Code:
+  `CACC`, `CASH`, `SLRY` CHECKING; `SVGS`, `LLSV`, `MOMA` SAVINGS; `ONDP` TERM_DEPOSIT; `CARD`; `LOAN`,
+  `MGLD` LOAN; `ODFT` REVOLVING), OFX's `ACCTTYPE` (`CHECKING`, `SAVINGS`, `MONEYMRKT`, `CD`,
+  `CREDITLINE`) or a credit card statement (CARD), the CSV's `account.type` option (those words, or
+  Omnibank's kinds); none or another word: `UNKNOWN`;
+- a line's category: CAMT.053's bank transaction code, the longest prefix of
+  domain/family/sub-family (`PMNT/ICDT`, `PMNT/RCDT` TRANSFER; `PMNT/CCRD/CWDL`, `PMNT/CNTR`,
+  `PMNT/CHCK` CASH; `LDAS` LOAN; `SECU` SAVINGS; `ACMT` and any `CHRG`, `FEES`, `COMM` sub-family
+  BANK_FEES), OFX's `TRNTYPE` (`XFER` TRANSFER; `ATM`, `CASH`, `CHECK` CASH; `FEE`, `SRVCHG`
+  BANK_FEES; `INT`, `DIV`, `DIRECTDEP` INCOME), the CSV's `category` column (Omnibank's category
+  words; another word `UNKNOWN`). A card payment or a direct debit says nothing of what it paid:
+  no category.
+
 ## Transfers
 
 `transfer()` writes one pain.001.001.03 per call (the EPC implementation: service level SEPA,

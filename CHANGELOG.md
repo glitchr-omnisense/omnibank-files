@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- On omnisense/contracts: its usage policy as data: `policy.json` (no remote service: no limit, no key), named in `composer.json`'s `extra.omnisense.policy`. Requires omnisense/contracts. `phpstan.neon` at level max, `phpstan-baseline.neon` what was there (175 errors). `Tests/FilesPolicyTest`.
+
 ### Added
 
 - The statements' words mapped onto omnisense/omnibank's (`Words`): the account's type -

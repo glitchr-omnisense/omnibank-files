@@ -1,0 +1,38 @@
+{
+    "$schema": "https://github.com/glitchr-omnisense/contracts/blob/1.x/resources/usage-policy.schema.json",
+    "provider": "files",
+    "rateLimits": [],
+    "concurrency": null,
+    "rights": {
+        "commercial": "allowed",
+        "openSourceRequired": false,
+        "caching": {
+            "permission": "allowed",
+            "maxTtl": null
+        },
+        "storage": "allowed",
+        "redistribution": "allowed",
+        "attribution": {
+            "required": false,
+            "text": null,
+            "url": null,
+            "where": []
+        },
+        "licence": null
+    },
+    "requirements": {
+        "key": false,
+        "userAgent": {
+            "required": false,
+            "pattern": null
+        }
+    },
+    "provenance": {
+        "terms": null,
+        "policy": null,
+        "verifiedAt": "2026-11-10",
+        "declaredBy": "maintainer",
+        "contact": null,
+        "notes": "No remote service: the statements are files the bank exported (CAMT.053, OFX, CSV) read from the connection's state, and a transfer is a pain.001 file written for the account holder to upload to the bank. No rate limit ([]), no key; what may be done with the files is the bank's contract with its customer. A transfer is never sent by this package: each transfer() writes a new file with a new message id, so a file written twice and uploaded twice is two payments - give each transfer its endToEndId and upload one file per transfer."
+    }
+}

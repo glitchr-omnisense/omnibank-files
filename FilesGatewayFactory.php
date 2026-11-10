@@ -34,6 +34,7 @@ final class FilesGatewayFactory extends GatewayFactory
             'omnibank.factory_name' => 'files',
             'omnibank.factory_title' => 'Statement files',
             'omnibank.required_options' => [],
+            'omnibank.policy' => __DIR__.'/policy.json',
             'currency' => 'EUR',
             'csv' => [],
             'debtor_name' => null,

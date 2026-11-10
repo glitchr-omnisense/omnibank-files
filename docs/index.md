@@ -244,6 +244,13 @@ omnibank:
                 debtor_bic: AGRIFRPP882
 ```
 
+## Usage policy
+
+`policy.json` (named in `composer.json`'s `extra.omnisense.policy`): no remote service, so no
+rate limit (`[]`) and no key. A transfer is a pain.001 file, never sent by the package; each
+`transfer()` writes a new message id, so a file written twice and uploaded twice is two payments:
+give each transfer its `endToEndId` and upload one file once. See omnisense/omnibank's [Usage policies and rate limits](https://github.com/glitchr-omnisense/omnibank/blob/1.x/docs/policies.md).
+
 ## Errors
 
 - `ProviderException` (`[files] ...`): the connection's `statements` is not a list, a statement has

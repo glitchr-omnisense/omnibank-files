@@ -21,7 +21,7 @@ use Omnibank\GatewayFactory;
  *   options:
  *     currency: EUR                  # a CSV's, when it does not say
  *     csv: { delimiter: ';', date_format: 'd/m/Y', columns: { ... } }   # see Reader\CsvReader
- *     debtor_name: 'Nakaya SAS'      # for transfer(): the account holder, as the bank knows it
+ *     debtor_name: 'Atelier Exemple SAS' # for transfer(): the account holder, as the bank knows it
  *     debtor_bic: null               # the debtor's bank's BIC; "NOTPROVIDED" goes without
  *     initiating_party: null         # who sends the file, when not the debtor
  *     batch_booking: false

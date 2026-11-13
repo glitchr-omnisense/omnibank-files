@@ -35,7 +35,7 @@ foreach ($gateway->accounts($connection) as $account) {
 ## Configuration
 
 ```php
-$gateway = (new FilesGatewayFactory())->create(['debtor_name' => 'Nakaya SAS']);
+$gateway = (new FilesGatewayFactory())->create(['debtor_name' => 'Atelier Exemple SAS']);
 ```
 
 No framework needed, and no HTTP client: the package requires `omnisense/omnibank` and the `dom`
@@ -49,8 +49,8 @@ omnibank:
             options:
                 currency: EUR                 # a CSV's, when it does not say
                 csv: { date_format: 'd/m/Y' } # the CSV options (below), for every CSV
-                debtor_name: 'Nakaya SAS'     # for transfer(): the account holder, as the bank knows it
-                debtor_bic: AGRIFRPP882       # optional: "NOTPROVIDED" goes without
+                debtor_name: 'Atelier Exemple SAS' # for transfer(): the account holder, as the bank knows it
+                debtor_bic: TESTFRPPXXX       # optional: "NOTPROVIDED" goes without
                 initiating_party: null        # who sends the file, when not the debtor
                 batch_booking: false
 ```

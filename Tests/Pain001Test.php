@@ -55,7 +55,7 @@ final class Pain001Test extends TestCase
 
     public function testATransferIsAPain001FileValidAgainstItsSchema(): void
     {
-        $gateway = (new FilesGatewayFactory())->create(['debtor_name' => 'Nakaya SAS', 'debtor_bic' => 'AGRIFRPP882']);
+        $gateway = (new FilesGatewayFactory())->create(['debtor_name' => 'Atelier Exemple SAS', 'debtor_bic' => 'TESTFRPPXXX']);
 
         $result = $gateway->transfer(new Connection(), self::transfer());
 
@@ -69,12 +69,12 @@ final class Pain001Test extends TestCase
         self::assertSame($result->id, $x->evaluate('string(//p:GrpHdr/p:MsgId)'));
         self::assertSame('1', $x->evaluate('string(//p:GrpHdr/p:NbOfTxs)'));
         self::assertSame('1234.56', $x->evaluate('string(//p:GrpHdr/p:CtrlSum)'));
-        self::assertSame('Nakaya SAS', $x->evaluate('string(//p:GrpHdr/p:InitgPty/p:Nm)'));
+        self::assertSame('Atelier Exemple SAS', $x->evaluate('string(//p:GrpHdr/p:InitgPty/p:Nm)'));
         self::assertSame('TRF', $x->evaluate('string(//p:PmtInf/p:PmtMtd)'));
         self::assertSame('SEPA', $x->evaluate('string(//p:PmtInf/p:PmtTpInf/p:SvcLvl/p:Cd)'));
         self::assertSame('2026-10-05', $x->evaluate('string(//p:PmtInf/p:ReqdExctnDt)'));
         self::assertSame('FR7630006000011234567890189', $x->evaluate('string(//p:DbtrAcct/p:Id/p:IBAN)'), 'the IBAN as files write it');
-        self::assertSame('AGRIFRPP882', $x->evaluate('string(//p:DbtrAgt/p:FinInstnId/p:BIC)'));
+        self::assertSame('TESTFRPPXXX', $x->evaluate('string(//p:DbtrAgt/p:FinInstnId/p:BIC)'));
         self::assertSame('SLEV', $x->evaluate('string(//p:PmtInf/p:ChrgBr)'));
         self::assertSame('1234.56', $x->evaluate('string(//p:CdtTrfTxInf/p:Amt/p:InstdAmt)'));
         self::assertSame('EUR', $x->evaluate('string(//p:CdtTrfTxInf/p:Amt/p:InstdAmt/@Ccy)'));
@@ -87,7 +87,7 @@ final class Pain001Test extends TestCase
 
     public function testWithoutBicsTheFileStillHolds(): void
     {
-        $writer = new Pain001Writer('Nakaya SAS');
+        $writer = new Pain001Writer('Atelier Exemple SAS');
         $xml = $writer->write([self::transfer(null, 'E2E-42')], 'MSG-1', new \DateTimeImmutable('2026-10-03 10:00:00'));
 
         self::assertValid($xml);
@@ -100,7 +100,7 @@ final class Pain001Test extends TestCase
 
     public function testSeveralTransfersOnePaymentBlockPerAccountAndDate(): void
     {
-        $writer = new Pain001Writer('Nakaya SAS', 'AGRIFRPP882', 'Cabinet Comptable Durand', true);
+        $writer = new Pain001Writer('Atelier Exemple SAS', 'TESTFRPPXXX', 'Cabinet Comptable Durand', true);
         $other = new Transfer('FR7630006000011234567890189', 'Hugo Bernard', 'FR6215629027120001234567811', null, Money::of(250000, 'EUR'), 'SALAIRE 09/2026', executionDate: new \DateTimeImmutable('2026-10-05'));
         $later = new Transfer('FR7630006000011234567890189', 'Lucie Martin', 'FR6010278060410002051020134', null, Money::of(5, 'EUR'), 'Test', executionDate: new \DateTimeImmutable('2026-10-31'));
         $xml = $writer->write([self::transfer(), $other, $later], 'MSG-2', new \DateTimeImmutable('2026-10-03'));
@@ -120,7 +120,7 @@ final class Pain001Test extends TestCase
 
     public function testATransferThatCannotBeSentIsRefusedBeforeTheFile(): void
     {
-        $writer = new Pain001Writer('Nakaya SAS');
+        $writer = new Pain001Writer('Atelier Exemple SAS');
         foreach ([
             'euros' => new Transfer('FR7630006000011234567890189', 'X', 'FR6010278060410002051020134', null, Money::of(100, 'USD'), 'x'),
             'positive' => new Transfer('FR7630006000011234567890189', 'X', 'FR6010278060410002051020134', null, Money::of(-100, 'EUR'), 'x'),

@@ -29,7 +29,7 @@
             <TRNAMT>1000.00</TRNAMT>
             <FITID>BNP-0910-77</FITID>
             <REFNUM>EPARGNE-09</REFNUM>
-            <PAYEE><NAME>Nakaya SAS</NAME></PAYEE>
+            <PAYEE><NAME>Atelier Exemple SAS</NAME></PAYEE>
             <BANKACCTTO><BANKID>30006</BANKID><ACCTID>FR7630006000011234567890189</ACCTID><ACCTTYPE>CHECKING</ACCTTYPE></BANKACCTTO>
             <MEMO>Virement &amp; epargne</MEMO>
           </STMTTRN>

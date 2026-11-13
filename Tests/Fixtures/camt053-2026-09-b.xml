@@ -11,8 +11,8 @@
       <Acct>
         <Id><IBAN>FR7630006000011234567890189</IBAN></Id>
         <Ccy>EUR</Ccy>
-        <Ownr><Nm>NAKAYA SAS</Nm></Ownr>
-        <Svcr><FinInstnId><BICFI>AGRIFRPP882</BICFI></FinInstnId></Svcr>
+        <Ownr><Nm>ATELIER EXEMPLE SAS</Nm></Ownr>
+        <Svcr><FinInstnId><BICFI>TESTFRPPXXX</BICFI></FinInstnId></Svcr>
       </Acct>
       <Bal>
         <Tp><CdOrPrtry><Cd>OPBD</Cd></CdOrPrtry></Tp>

@@ -15,8 +15,8 @@
         <Id><IBAN>FR7630006000011234567890189</IBAN></Id>
         <Ccy>EUR</Ccy>
         <Nm>Compte courant</Nm>
-        <Ownr><Nm>NAKAYA SAS</Nm></Ownr>
-        <Svcr><FinInstnId><BIC>AGRIFRPP882</BIC></FinInstnId></Svcr>
+        <Ownr><Nm>ATELIER EXEMPLE SAS</Nm></Ownr>
+        <Svcr><FinInstnId><BIC>TESTFRPPXXX</BIC></FinInstnId></Svcr>
       </Acct>
       <Bal>
         <Tp><CdOrPrtry><Cd>OPBD</Cd></CdOrPrtry></Tp>
@@ -57,7 +57,7 @@
             <RltdPties>
               <Dbtr><Nm>Camille Durand</Nm></Dbtr>
               <DbtrAcct><Id><IBAN>FR14 2004 1010 0505 0001 3M02 606</IBAN></Id></DbtrAcct>
-              <Cdtr><Nm>NAKAYA SAS</Nm></Cdtr>
+              <Cdtr><Nm>ATELIER EXEMPLE SAS</Nm></Cdtr>
               <CdtrAcct><Id><IBAN>FR7630006000011234567890189</IBAN></Id></CdtrAcct>
             </RltdPties>
             <RmtInf><Ustrd>Facture F-2026-042</Ustrd></RmtInf>
@@ -81,7 +81,7 @@
               <MndtId>EDF-12345-2019</MndtId>
             </Refs>
             <RltdPties>
-              <Dbtr><Nm>NAKAYA SAS</Nm></Dbtr>
+              <Dbtr><Nm>ATELIER EXEMPLE SAS</Nm></Dbtr>
               <Cdtr><Nm>EDF</Nm></Cdtr>
               <CdtrAcct><Id><IBAN>FR7630004000031234567890143</IBAN></Id></CdtrAcct>
             </RltdPties>
@@ -151,7 +151,7 @@
         <NtryDtls>
           <TxDtls>
             <RltdPties>
-              <Dbtr><Nm>NAKAYA SAS</Nm></Dbtr>
+              <Dbtr><Nm>ATELIER EXEMPLE SAS</Nm></Dbtr>
               <Cdtr><Nm>EDF</Nm></Cdtr>
               <CdtrAcct><Id><IBAN>FR7630004000031234567890143</IBAN></Id></CdtrAcct>
             </RltdPties>

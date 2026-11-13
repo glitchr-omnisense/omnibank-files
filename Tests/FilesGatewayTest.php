@@ -61,10 +61,10 @@ final class FilesGatewayTest extends TestCase
         $account = $accounts[0];
         self::assertSame('FR7630006000011234567890189', $account->id);
         self::assertSame('FR7630006000011234567890189', $account->iban);
-        self::assertSame('AGRIFRPP882', $account->bic);
+        self::assertSame('TESTFRPPXXX', $account->bic);
         self::assertSame('Compte courant', $account->name);
         self::assertSame('EUR', $account->currency);
-        self::assertSame('NAKAYA SAS', $account->raw['owner']);
+        self::assertSame('ATELIER EXEMPLE SAS', $account->raw['owner']);
 
         $balances = $gateway->balances($connection, $account);
         $byType = array_combine(array_map(static fn ($b) => $b->type, $balances), $balances);
@@ -189,9 +189,9 @@ final class FilesGatewayTest extends TestCase
         $transactions = $gateway->transactions($connection, $account);
         $transfer = self::byId($transactions)['BNP-0910-77'];
         self::assertSame(100000, $transfer->amount->amount);
-        self::assertSame('Nakaya SAS', $transfer->counterpartyName, 'PAYEE');
+        self::assertSame('Atelier Exemple SAS', $transfer->counterpartyName, 'PAYEE');
         self::assertSame('FR7630006000011234567890189', $transfer->counterpartyIban);
-        self::assertSame('Nakaya SAS Virement & epargne', $transfer->label, 'entities decoded');
+        self::assertSame('Atelier Exemple SAS Virement & epargne', $transfer->label, 'entities decoded');
         self::assertSame('EPARGNE-09', $transfer->reference);
         self::assertSame('INTERETS', self::byId($transactions)['BNP-0920-01']->label);
 

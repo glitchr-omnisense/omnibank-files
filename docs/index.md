@@ -188,7 +188,7 @@ require __DIR__.'/vendor/autoload.php';
 use Omnibank\Files\FilesGatewayFactory;
 use Omnibank\Model\Connection;
 
-$gateway = (new FilesGatewayFactory())->create(['debtor_name' => 'Nakaya SAS']);
+$gateway = (new FilesGatewayFactory())->create(['debtor_name' => 'Atelier Exemple SAS']);
 
 // OFX 1.x as French banks export it: SGML, leaf tags left open, no IBAN
 $ofx = <<<'OFX'
@@ -200,7 +200,7 @@ CHARSET:1252
 <BANKACCTFROM><BANKID>30006<BRANCHID>00001<ACCTID>12345678901<ACCTTYPE>CHECKING</BANKACCTFROM>
 <BANKTRANLIST>
 <STMTTRN><TRNTYPE>DEBIT<DTPOSTED>20260903<TRNAMT>-45,90<FITID>202609030001<NAME>PRLV SEPA EDF<MEMO>CLIENT 12345</STMTTRN>
-<STMTTRN><TRNTYPE>CREDIT<DTPOSTED>20260901120000.000[+2:CEST]<TRNAMT>2500.00<FITID>202609010007<NAME>VIR SEPA RECU NAKAYA SAS</STMTTRN>
+<STMTTRN><TRNTYPE>CREDIT<DTPOSTED>20260901120000.000[+2:CEST]<TRNAMT>2500.00<FITID>202609010007<NAME>VIR SEPA RECU ATELIER EXEMPLE SAS</STMTTRN>
 </BANKTRANLIST>
 <LEDGERBAL><BALAMT>11219.54<DTASOF>20260905</LEDGERBAL>
 </STMTRS></STMTTRNRS></BANKMSGSRSV1></OFX>
@@ -224,7 +224,7 @@ foreach ($gateway->accounts($connection) as $account) {
 $ php files.php
 FR7630006000011234567890189 Compte courant (checking, bank 30006)
   booked 11219.54 EUR on 2026-09-05
-  2026-09-01  2500.00  VIR SEPA RECU NAKAYA SAS       id 202609010007
+  2026-09-01  2500.00  VIR SEPA RECU ATELIER EXEMPLE SAS id 202609010007
   2026-09-03   -45.90  PRLV SEPA EDF CLIENT 12345     id 202609030001
 ```
 
@@ -240,8 +240,8 @@ omnibank:
             options:
                 currency: EUR
                 csv: { date_format: 'd/m/Y' }
-                debtor_name: 'Nakaya SAS'
-                debtor_bic: AGRIFRPP882
+                debtor_name: 'Atelier Exemple SAS'
+                debtor_bic: TESTFRPPXXX
 ```
 
 ## Usage policy

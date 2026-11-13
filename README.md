@@ -4,6 +4,36 @@ Statement files for [omnisense/omnibank](https://github.com/glitchr-omnisense/om
 export, read as accounts, balances and transactions - CAMT.053, OFX, CSV - and SEPA credit
 transfers written as the pain.001.001.03 file a bank takes. No network, no consent.
 
+## Install and a first call
+
+```sh
+composer require omnibank/files
+```
+
+No bank account and no network: the statements are files you already have.
+
+```php
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use Omnibank\Files\FilesGatewayFactory;
+use Omnibank\Model\Connection;
+
+// A bank's CSV export, read offline: no bank account to connect, no network.
+$csv = "Date;Libellé;Montant\n01/09/2026;LOYER SEPTEMBRE;-850,00\n05/09/2026;VIREMENT CLIENT;2 400,00\n";
+$gateway = (new FilesGatewayFactory())->create();
+$connection = new Connection(['statements' => [['name' => 'export.csv', 'content' => $csv]]]);
+
+foreach ($gateway->accounts($connection) as $account) {
+    foreach ($gateway->transactions($connection, $account) as $transaction) {
+        echo $transaction->bookedOn->format('Y-m-d'), ' ', $transaction->amount->decimal(), ' ', $transaction->label, "\n";   // 2026-09-01 -850.00 LOYER SEPTEMBRE, then 2026-09-05 2400.00 VIREMENT CLIENT
+    }
+}
+```
+
+## Configuration
+
 ```php
 $gateway = (new FilesGatewayFactory())->create(['debtor_name' => 'Nakaya SAS']);
 ```
